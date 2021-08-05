@@ -1,7 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { counterSlice } from "../redux/createSlice/counterSlice";
+
+console.log("counterSlice:", counterSlice);
+// actions:
+// decrement: ƒ actionCreator()
+// increment: ƒ actionCreator()
+// incrementByAmount: ƒ actionCreator()
+// seoul: ƒ actionCreator()
+// [[Prototype]]: Object
+// caseReducers:
+// decrement: state => { state.value -= 1; }
+// increment: state => {…}
+// incrementByAmount: (state, action) => {…}
+// seoul: state => { state.name = "Seoul"; }
+// [[Prototype]]: Object
+// name: "counter"
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    counter: counterSlice.reducer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
