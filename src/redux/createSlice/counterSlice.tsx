@@ -1,4 +1,49 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+
+export const slice = createSlice({
+  name: "counter",
+  initialState: {
+    value: 0,
+  },
+  reducers: {
+    //여기에서 설정한 key값이 actions.type이 된다
+    increment: (state) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      state.value += 1;
+    },
+    decrement: (state) => {
+      state.value -= 1;
+    },
+    incrementByAmount: (state, action) => {
+      state.value += action.payload;
+    },
+  },
+});
+
+// Action creators are generated for each case reducer function
+export const { increment, decrement, incrementByAmount } = slice.actions;
+
+// The function below is called a thunk and allows us to perform async logic. It
+// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
+// will call the thunk with the `dispatch` function as the first argument. Async
+// code can then be executed and other actions can be dispatched
+export const incrementAsync = (amount: number) => (dispatch: any) => {
+  setTimeout(() => {
+    dispatch(incrementByAmount(amount));
+  }, 1000);
+};
+
+// The function below is called a selector and allows us to select a value from
+// the state. Selectors can also be defined inline where they're used instead of
+// in the slice file. For example: `useSelector((state) => state.counter.value)`
+
+// selector function도 createSlice있는 곳에서 정의 후, 사용하는 곳마다 import해옴
+export const selectCount = (state: any) => state.counter.value;
+
+export default slice.reducer;
 
 // Creating a slice requires
 // 1. a string name to identify the slice, (타입 이름)
@@ -7,46 +52,4 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // Once a slice is created, we can export the generated Redux action creators and the reducer function
 // for the whole slice.
 
-// Redux requires that we write all state updates immutably, by making copies of data and updating the copies.
-// Toolkit's createSlice and createReducer APIs use Immer inside  ( createSlice / createReducer => immer를 내부적으로 사용)
-// to allow us to write "mutating" update logic that becomes correct immutable updates.
-
-export interface CounterState {
-  value: number;
-  name: string;
-}
-
-const initialState: CounterState = {
-  value: 0,
-  name: "",
-};
-
-export const counterSlice = createSlice({
-  name: "counter",
-  initialState,
-  reducers: {
-    //여기에서 설정한 key값이 actions.type이 된다
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
-    },
-    seoul: (state) => {
-      state.name = "Seoul";
-    },
-  },
-});
-
-// Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
 // reducer에 정의한 게 action.type이 된다
-
-export default counterSlice;
